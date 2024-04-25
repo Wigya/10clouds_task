@@ -13,6 +13,11 @@ load_dotenv()
 API_KEY = os.environ.get("API_KEY")
 USERNAME = os.environ.get("USERNAME")
 
+@app.route("/")
+def index():
+    return "Home Page"
+
+
 @app.route("/search", methods=["GET"])
 async def searchRepositories():
     base_url = "https://api.github.com/search/repositories"
@@ -25,13 +30,13 @@ async def searchRepositories():
     if(query):
         base_url += f"?q={query}"
     if(sort):
-        base_url += f"?sort={sort}"
+        base_url += f"&sort={sort}"
     if(order):
-        base_url += f"?order={order}"
+        base_url += f"&order={order}"
     if(page):
-        base_url += f"?page={page}"
+        base_url += f"&page={page}"
     if(per_page):
-        base_url += f"?per_page={per_page}"
+        base_url += f"&per_page={per_page}"
     
     github_response: Response = requests.get(base_url, auth=(USERNAME, API_KEY))
 
@@ -39,7 +44,7 @@ async def searchRepositories():
         github_response_items: list = github_response.json()["items"]
         casted_data: list = cast_api_response(github_response_items)
 
-        return {"status": 200, "items": casted_data}, 200
+        return {"status": 200, "count": len(casted_data), "items": casted_data}, 200
     elif (github_response.status_code == 304):
         return {"status": 304, "error": "[GitHub Service] Not modified"}, 304
     elif (github_response.status_code == 422):
