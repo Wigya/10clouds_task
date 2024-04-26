@@ -7,7 +7,8 @@ The application runs on port 8080
 ``cd 10clouds_task``
 3. Install dependencies:</br>
 ``pip install -r requirements.txt``
-4. Run the application(use ``python3`` if needed)</br>
+4. Add an .env file with the following fields `API_KEY` and `USERNAME`
+5. Run the application(use ``python3`` if needed)</br>
 ``python app.py``
 
 ## Interacting with the API
